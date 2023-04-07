@@ -8,8 +8,8 @@ import {Bars3Icon, CheckIcon} from "react-native-heroicons/outline";
 
 type Item = {
   _id: string;
-  index: number;
   name: string;
+  elements: string[];
 };
 
 const Element = ({item, drag, isActive}: RenderItemParams<Item>) => {
