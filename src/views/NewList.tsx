@@ -1,22 +1,26 @@
 import React, {useState} from "react";
 import {Pressable, Text, TextInput, View} from "react-native";
-import lists from "../../generated.json";
-import uuid from 'react-native-uuid';
-
+import firestore from "@react-native-firebase/firestore";
 
 const NewList = ({navigation}: any) => {
   const [name, setName] = useState("");
-  const [elementItem, setElementItem] = useState("");
+  const [elementItem, setElementItem] = useState<string>("");
   const [elements, setElements] = useState<string[]>([]);
+
   const newList = () => {
     const element = {
-      _id: uuid.v4().toString(),
       name: name,
       elements: elements,
     };
-    lists.push(element);
-    navigation.navigate("Home");
+    firestore()
+      .collection("listas")
+      .add(element)
+      .then(() => {
+        console.log("User added!");
+        navigation.navigate("Home");
+      });
   };
+
   return (
     <View className="flex flex-col w-screen h-full text-left items-center">
       <TextInput
@@ -59,6 +63,3 @@ const NewList = ({navigation}: any) => {
 };
 
 export default NewList;
-function uuidv4() {
-  throw new Error("Function not implemented.");
-}
