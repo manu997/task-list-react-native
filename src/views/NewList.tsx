@@ -16,9 +16,15 @@ const NewList = ({navigation}: any) => {
       .collection("listas")
       .add(element)
       .then(() => {
-        console.log("User added!");
         navigation.navigate("Home");
       });
+  };
+
+  const newElement = () => {
+    if (elementItem !== "") {
+      setElements([...elements, elementItem]);
+      setElementItem("");
+    }
   };
 
   return (
@@ -42,12 +48,11 @@ const NewList = ({navigation}: any) => {
           placeholder="Nuevo elemento"
           placeholderTextColor="#374151"
           onChangeText={text => setElementItem(text)}
+          value={elementItem}
         />
         <Pressable
           className="bg-sky-900 flex justify-center items-center rounded-lg w-1/5"
-          onPress={() =>
-            elementItem !== "" ? setElements([...elements, elementItem]) : ""
-          }
+          onPress={newElement}
         >
           <Text className="text-white text-sm">Añadir</Text>
         </Pressable>

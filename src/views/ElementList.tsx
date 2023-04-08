@@ -1,13 +1,29 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {Pressable, Text, View} from "react-native";
 import Element from "./Element";
+import firestore from "@react-native-firebase/firestore";
 
-import lists from "../../generated.json";
 import DraggableFlatList from "react-native-draggable-flatlist";
 import {GestureHandlerRootView} from "react-native-gesture-handler";
 
 const ElementList = ({navigation}: any) => {
-  const [data, setData] = useState(lists);
+  const [data, setData] = useState<any[]>([]);
+
+  useEffect(() => {
+    const subscriber = firestore()
+      .collection("listas")
+      .onSnapshot(data => {
+        const listObject: any[] = [];
+        data.forEach(item => {
+          listObject.push({
+            ...item.data(),
+            key: item.id,
+          });
+        });
+        setData(listObject);
+      });
+    return () => subscriber();
+  }, []);
 
   return (
     <GestureHandlerRootView>
