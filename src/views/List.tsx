@@ -7,7 +7,7 @@ type List = {
   elements: any[];
   navigation?: any;
   route?: any;
-  children: any;
+  children?: any;
 };
 
 const List = ({elements, navigation, route, children}: List) => {
@@ -16,9 +16,10 @@ const List = ({elements, navigation, route, children}: List) => {
       {elements.map(item => {
         return (
           <Element
-            name={item.name}
-            elements={item.elements}
-            isCompleted={item.isCompleted}
+            id={item.id}
+            name={item.items.name}
+            elements={item.items.elements}
+            isCompleted={item.items.isCompleted}
             navigation={navigation}
           />
         );

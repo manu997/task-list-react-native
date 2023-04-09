@@ -14,7 +14,7 @@ const App = () => {
         <Stack.Screen
           name="Home"
           options={{
-            title: "Mis listas",
+            title: "Mis tareas",
             headerTitleStyle: {
               fontSize: 30,
               color: "#0c4a6e",
@@ -25,7 +25,7 @@ const App = () => {
         <Stack.Screen
           name="NewList"
           options={{
-            title: "Nueva lista",
+            title: "Nueva tarea",
             headerTitleStyle: {
               fontSize: 30,
               color: "#0c4a6e",

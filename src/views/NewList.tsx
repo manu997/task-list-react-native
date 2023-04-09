@@ -8,16 +8,17 @@ const NewList = ({navigation}: any) => {
   const [elements, setElements] = useState<any[]>([]);
 
   const newList = () => {
-    const element = {
-      name: name,
-      elements: elements,
-    };
-    firestore()
-      .collection("listas")
-      .add(element)
-      .then(() => {
-        navigation.navigate("Home");
-      });
+    const db = firestore();
+    const batch = db.batch();
+
+    elements.forEach(item => {
+      var docRef = db.collection("listas").doc(); //automatically generate unique id
+      batch.set(docRef, item);
+    });
+
+    batch.commit();
+
+    navigation.navigate("Home")
   };
 
   const newElement = () => {
@@ -35,17 +36,11 @@ const NewList = ({navigation}: any) => {
 
   return (
     <View className="flex flex-col w-screen h-full text-left items-center">
-      <TextInput
-        className="p-3 border-sky-900 border-2 text-sky-900 my-4 rounded-lg text-lg w-80"
-        placeholder="Nombre de la lista"
-        placeholderTextColor="#374151"
-        onChangeText={setName}
-        value={name}
-      />
-      <View className="bg-sky-900 h-0.5 w-full mb-2" />
       {elements.map(item => {
         return (
-          <Text className="text-sky-900 text-lg self-start ml-10">{item.name}</Text>
+          <Text className="text-sky-900 text-lg self-start ml-10">
+            {item.name}
+          </Text>
         );
       })}
       <View className="flex flex-row my-4 justify-between w-80">

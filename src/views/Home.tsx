@@ -18,9 +18,14 @@ const Home = ({navigation}: any) => {
         const pendingLists: any[] = [];
         const completedLists: any[] = [];
         lists.forEach(item => {
+          const obj = item.data();
+          const newObj = {
+            id: item.id,
+            items: obj,
+          };
           item.data().isCompleted
-            ? completedLists.push(item.data())
-            : pendingLists.push(item.data());
+            ? completedLists.push(newObj)
+            : pendingLists.push(newObj);
         });
         setPendingLists(pendingLists);
         setCompletedLists(completedLists);
@@ -29,29 +34,20 @@ const Home = ({navigation}: any) => {
 
   return (
     <Tab.Navigator>
-      <Tab.Screen name="PendingLists" options={{title: "Listas pendientes"}}>
-      {props => (
+      <Tab.Screen name="PendingLists" options={{title: "Tareas pendientes"}}>
+        {props => (
           <List {...props} elements={pendingLists}>
             <Pressable
-              className="bg-sky-900 absolute bottom-20 right-10 w-20 h-20 flex justify-center items-center rounded-2xl"
+              className="bg-sky-900 absolute bottom-20 right-10 w-1/3 h-20 flex justify-center items-center rounded-2xl"
               onPress={() => navigation.navigate("NewList")}
             >
-              <Text className="text-white text-7xl pt-2">+</Text>
+              <Text className="text-white text-xl px-5">Añadir tareas</Text>
             </Pressable>
           </List>
         )}
       </Tab.Screen>
-      <Tab.Screen name="CompletedLists" options={{title: "Listas completadas"}}>
-        {props => (
-          <List {...props} elements={completedLists}>
-            <Pressable
-              className="bg-sky-900 absolute bottom-20 right-10 w-20 h-20 flex justify-center items-center rounded-2xl"
-              onPress={() => navigation.navigate("NewList")}
-            >
-              <Text className="text-white text-7xl pt-2">+</Text>
-            </Pressable>
-          </List>
-        )}
+      <Tab.Screen name="CompletedLists" options={{title: "Tareas completadas"}}>
+        {props => <List {...props} elements={completedLists} />}
       </Tab.Screen>
     </Tab.Navigator>
   );
