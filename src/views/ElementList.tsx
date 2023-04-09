@@ -1,39 +1,28 @@
 import React, {useEffect, useState} from "react";
 import {Pressable, Text, View} from "react-native";
-import Element from "./Element";
-import firestore from "@react-native-firebase/firestore";
+import Element from "../components/Element";
 
-import DraggableFlatList from "react-native-draggable-flatlist";
 import {GestureHandlerRootView} from "react-native-gesture-handler";
 
-const ElementList = ({navigation}: any) => {
-  const [data, setData] = useState<any[]>([]);
+type ElementList = {
+  list: any[];
+  navigation?: any;
+};
 
-  useEffect(() => {
-    const subscriber = firestore()
-      .collection("listas")
-      .onSnapshot(data => {
-        const listObject: any[] = [];
-        data.forEach(item => {
-          listObject.push({
-            ...item.data(),
-            key: item.id,
-          });
-        });
-        setData(listObject);
-      });
-    return () => subscriber();
-  }, []);
-
+const ElementList = ({list, navigation}: ElementList) => {
   return (
     <GestureHandlerRootView>
       <View className="h-full w-screen mr-6">
-        <DraggableFlatList
-          data={data}
-          renderItem={Element}
-          keyExtractor={item => item._id}
-          onDragEnd={({data}) => setData(data)}
-        />
+        {list.map(item => {
+          return (
+            <Element
+              name={item.name}
+              elements={item.elements}
+              isCompleted={item.isCompleted}
+              navigation={navigation}
+            />
+          );
+        })}
         <Pressable
           className="bg-sky-900 absolute bottom-20 right-10 w-20 h-20 flex justify-center items-center rounded-2xl"
           onPress={() => navigation.navigate("NewList")}

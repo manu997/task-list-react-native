@@ -5,7 +5,7 @@ import firestore from "@react-native-firebase/firestore";
 const NewList = ({navigation}: any) => {
   const [name, setName] = useState("");
   const [elementItem, setElementItem] = useState<string>("");
-  const [elements, setElements] = useState<string[]>([]);
+  const [elements, setElements] = useState<any[]>([]);
 
   const newList = () => {
     const element = {
@@ -22,7 +22,13 @@ const NewList = ({navigation}: any) => {
 
   const newElement = () => {
     if (elementItem !== "") {
-      setElements([...elements, elementItem]);
+      setElements([
+        ...elements,
+        {
+          name: elementItem,
+          isCompleted: false,
+        },
+      ]);
       setElementItem("");
     }
   };
@@ -39,7 +45,7 @@ const NewList = ({navigation}: any) => {
       <View className="bg-sky-900 h-0.5 w-full mb-2" />
       {elements.map(item => {
         return (
-          <Text className="text-sky-900 text-lg self-start ml-10">{item}</Text>
+          <Text className="text-sky-900 text-lg self-start ml-10">{item.name}</Text>
         );
       })}
       <View className="flex flex-row my-4 justify-between w-80">
